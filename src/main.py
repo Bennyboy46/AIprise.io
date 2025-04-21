@@ -26,7 +26,7 @@ if not GOOGLE_API_KEY:
     raise ValueError("GOOGLE_API_KEY environment variable is not set")
 
 genai.configure(api_key=GOOGLE_API_KEY)
-model = genai.GenerativeModel('gemini-1.5-flash')
+model = genai.GenerativeModel('gemini-pro')
 
 # Enterprise-specific system prompt
 ENTERPRISE_PROMPT = """You are an Enterprise AI Assistant specialized in business and professional services. 
@@ -85,8 +85,7 @@ async def chat(request: Dict[str, Any]):
         enterprise_message = f"{ENTERPRISE_PROMPT}\n\nUser Query: {last_message['content']}"
         
         # Generate response
-        chat = model.start_chat(history=[])
-        response = chat.send_message(enterprise_message)
+        response = model.generate_content(enterprise_message)
         
         return {"response": response.text}
     
